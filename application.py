@@ -2,8 +2,8 @@ from flask import Flask, session, redirect, url_for, render_template, request
 from flask_session import Session
 from sqlalchemy import create_engine, and_, or_
 from sqlalchemy.orm import scoped_session, sessionmaker
-#from models import *
-#import goslate
+from models import *
+import goslate
 import requests
 
 app = Flask(__name__)
@@ -16,7 +16,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://xvqgrrhdrnnlxc:e9af57d1d766b
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 app.secret_key = 'super secret key'
-#db.init_app(app)
+db.init_app(app)
 
 
 @app.route("/")
@@ -44,19 +44,19 @@ def sign():
         username = request.form.get("username")
         password = request.form.get("password")
         user = User.query.filter_by(username=username).all()
-        if user = []:
+        if user == []:
             return render_template("error.html",message="yow")
         else:
             user = user[0]
             if user.password != password:
                 return_render_template("error.html",messsage="wrong password")
-            sesion["user_id"] = user.id
+            session["user_id"] = user.id
             return redirect(url_for('search'),user_id = user.id)
     return render_template("sign.html")
 
 @app.route("/search=<int:user_id>")
 def search(user_id):
-    return user_id
+    return f"{user_id}"
 
 
 
