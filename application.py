@@ -51,7 +51,7 @@ def sign():
             if user.password != password:
                 return_render_template("error.html",messsage="wrong password")
             session["user_id"] = user.id
-            return redirect(url_for('search'),user_id = user.id)
+            return redirect(url_for('search',user_id = user.id))
     return render_template("sign.html")
 
 @app.route("/search=<int:user_id>")
