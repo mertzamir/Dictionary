@@ -26,14 +26,44 @@ def home():
 @app.route("/register", method=["POST", "GET"])
 def register():
     if request.method == "POST":
-        # define user
-
-        # handle db
-
-        # return to sign in page
-
+        username = request.form.get("username")
+        password = request.form.get("password")
+        user = User.query.filter_by(username=username).scalar()
+        if user == None:
+            user = User(username=username,password=password)
+            db.session.add(user)
+            db.session.commit()
+            return redirect(url_for("sign"))
+        else:
+            return render_template("error.html",message="User already exists")
     return render_template("register.html")
 
 @app.route("/sign", method=["POST", "GET"])
 def sign():
-    # takil
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        user = User.query.filter_by(username=username).all()
+        if user = []:
+            return render_template("error.html",message="yow")
+        else:
+            user = user[0]
+            if user.password != password:
+                return_render_template("error.html",messsage="wrong password")
+            sesion["user_id"] = user.id
+            return redirect(url_for('search'),user_id = user.id)
+    return render_template("sign.html")
+
+@app.route("/search=<int:user_id>")
+def search(user_id):
+    return user_id
+
+
+
+
+
+
+
+
+
+
