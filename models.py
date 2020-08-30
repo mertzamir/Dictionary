@@ -11,7 +11,7 @@ class User(db.Model):
     words = db.relationship("Word", backref="users", lazy=True)
 
     def add_word(self, text, translated):
-        w = Word(text=text, translated=translated, user_id=self.id)
+        w = Word(text=text, translated=translated, count= 3,user_id=self.id)
         db.session.add(w)
         db.session.commit()
 

@@ -5,6 +5,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 from models import *
 import goslate
 import requests
+import time
 
 app = Flask(__name__)
 
@@ -17,7 +18,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 app.secret_key = 'super secret key'
 db.init_app(app)
-
+gs = goslate.Goslate()
 
 @app.route("/")
 def home():
@@ -54,15 +55,17 @@ def sign():
             return redirect(url_for('search',user_id = user.id))
     return render_template("sign.html")
 
-@app.route("/search=<int:user_id>")
-def search(user_id, methods=["POST","GET"]):
+@app.route("/search=<int:user_id>",methods=["POST","GET"])
+def search(user_id):
     user = User.query.get(session["user_id"])
+    words = user.words
     if request.method == "POST":
-        gs = goslate.Goslate
+        time.sleep(1)
         text = request.form.get("text")
+        time.sleep(1)
         translated = gs.translate(text,'tr')
-        user.add_word(text=text,translated=translated)
-        return render_template("error.html", message=translated)
+        print(translated)
+        user.add_word(text,translated)
     return render_template("search.html",user=user)
 
 
