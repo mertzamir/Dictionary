@@ -55,10 +55,15 @@ def sign():
     return render_template("sign.html")
 
 @app.route("/search=<int:user_id>")
-def search(user_id):
-    return f"{user_id}"
-
-
+def search(user_id, methods=["POST","GET"]):
+    user = User.query.get(session["user_id"])
+    if request.method == "POST":
+        gs = goslate.Goslate
+        text = request.form.get("text")
+        translated = gs.translate(text,'tr')
+        user.add_word(text=text,translated=translated)
+        return render_template("error.html", message=translated)
+    return render_template("search.html",user=user)
 
 
 
