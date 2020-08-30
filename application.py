@@ -7,4 +7,11 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://xvqgrrhdrnnlxc:e9af57d1d766b
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db.init_app(app)
 
+@app.route("/")
+def home():
+    return render_template("home.html")
 
+@app.route
+
+if __name__ == "__main__":
+    app.run(debug=True)
