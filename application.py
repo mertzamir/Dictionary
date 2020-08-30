@@ -3,9 +3,9 @@ from flask_session import Session
 from sqlalchemy import create_engine, and_, or_
 from sqlalchemy.orm import scoped_session, sessionmaker
 from models import *
-import goslate
 import requests
 import time
+from googletrans import Translator
 
 app = Flask(__name__)
 
@@ -18,7 +18,6 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 app.secret_key = 'super secret key'
 db.init_app(app)
-gs = goslate.Goslate()
 
 @app.route("/")
 def home():
@@ -60,10 +59,10 @@ def search(user_id):
     user = User.query.get(session["user_id"])
     words = user.words
     if request.method == "POST":
-        time.sleep(1)
         text = request.form.get("text")
-        time.sleep(1)
-        translated = gs.translate(text,'tr')
+        translator = Translator()
+        translation = translator.translate(text, dest="tr")
+        translated = translation.text
         print(translated)
         user.add_word(text,translated)
     return render_template("search.html",user=user)
