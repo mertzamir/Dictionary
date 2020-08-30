@@ -2,8 +2,8 @@ from flask import Flask, session, redirect, url_for, render_template, request
 from flask_session import Session
 from sqlalchemy import create_engine, and_, or_
 from sqlalchemy.orm import scoped_session, sessionmaker
-from models import *
-import goslate
+#from models import *
+#import goslate
 import requests
 
 app = Flask(__name__)
@@ -16,14 +16,14 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "postgres://xvqgrrhdrnnlxc:e9af57d1d766b
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 app.config["SESSION_TYPE"] = "filesystem"
 app.secret_key = 'super secret key'
-db.init_app(app)
+#db.init_app(app)
 
 
 @app.route("/")
 def home():
     return render_template("home.html")
 
-@app.route("/register", method=["POST", "GET"])
+@app.route("/register", methods=["POST", "GET"])
 def register():
     if request.method == "POST":
         username = request.form.get("username")
@@ -38,7 +38,7 @@ def register():
             return render_template("error.html",message="User already exists")
     return render_template("register.html")
 
-@app.route("/sign", method=["POST", "GET"])
+@app.route("/sign", methods=["POST", "GET"])
 def sign():
     if request.method == "POST":
         username = request.form.get("username")
@@ -57,7 +57,6 @@ def sign():
 @app.route("/search=<int:user_id>")
 def search(user_id):
     return user_id
-
 
 
 
