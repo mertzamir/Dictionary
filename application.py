@@ -3,8 +3,10 @@ from flask_session import Session
 from sqlalchemy import create_engine, and_, or_
 from sqlalchemy.orm import scoped_session, sessionmaker
 from models import *
+from email import * 
 import requests
 import time
+import datetime as dt
 from googletrans import Translator
 
 app = Flask(__name__)
@@ -64,6 +66,10 @@ def search(user_id):
         translation = translator.translate(text, dest="tr")
         translated = translation.text
         print(translated)
+
+        #send email if there are at least 5 word searched
+        if len(user.words) >= 5:
+            send_email('zamir.mert52@gmail.com')
         user.add_word(text,translated)
     return render_template("search.html",user=user)
 
