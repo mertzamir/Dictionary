@@ -1,4 +1,4 @@
-#!/home/mertzamir/DictionaryProject/dict/bin/python3
+#!/home/mertzamir/Web/Dictionary/dict/bin/python3.7
 # -*- coding: utf-8 -*-
 import re
 import sys
