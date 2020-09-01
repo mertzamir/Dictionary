@@ -17,7 +17,7 @@ SEARCH
         </div>
 </form>
 <ul>
-	{% for word in user.words %}
+	{% for word in user.words|reverse %}
 	<li>{{ word.text }} , {{ word.translated }}</li>
 	{% else %}
 	<li>No searched</li>
