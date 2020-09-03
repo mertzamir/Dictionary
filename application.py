@@ -16,7 +16,7 @@ import smtplib, ssl
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-def send_email(to_email, user):
+def send_email(user):
     #create the smpt server and login
     dict_email = 'dark_blue9299@hotmail.com' #fill in w/ your email
     server = smtplib.SMTP('smtp-mail.outlook.com', 587)
@@ -29,13 +29,20 @@ def send_email(to_email, user):
     msg = MIMEMultipart()
     
     #message template
-    message = ""
+    message = "Your Vocabulary List:\n"
     for word in user.words:
-        message += (word.text + " -> " + word.translated + "\n")
+        word.count -= 1
+        print("{} : {}".format(word.text, word.count))
+            
+        #TODO 
+        #remove the word from words list if the count is < 0
+        
+        if word.count >= 0:
+            message += (word.text + " -> " + word.translated + "\n")
     
     #setup the parameters
     msg['From'] = dict_email
-    msg['To'] = to_email
+    msg['To'] = user.username #fetched from user object
     msg['Subject'] = "Don't Forget To Skim Through!"
 
     #add in the message body
@@ -43,6 +50,7 @@ def send_email(to_email, user):
     
     #send the message via the server
     server.send_message(msg)
+    print("mail sent")
     del msg
 
     #terminate the SMTP session and close connection
@@ -52,7 +60,6 @@ def send_email_at(send_time, to_email):
     time.sleep(send_time.timestamp() - time.timestamp())
     send_email(to_email)
     print('email sent')
-
 
 app = Flask(__name__)
 
@@ -113,9 +120,10 @@ def search(user_id):
         print(translated)
 
         #send email if there are at least 5 word searched
-        if len(user.words) >= 5:
-            send_email(user.username, user)
         user.add_word(text,translated)
+        print(len(user.words))
+        if len(user.words) % 5 == 0:
+            send_email(user)
     return render_template("search.html",user=user)
 
 
