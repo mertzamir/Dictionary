@@ -3,11 +3,11 @@ import time
 import smtplib, ssl
 
 def send_email(to_email):
-    dict_email = 'zamir.mert52@gmail.com' #fill in w/ your email
-    server = smtplib.SMTP('smtp.gmail.com', 587)
+    dict_email = 'dark_blue9299@hotmail.com' #fill in w/ your email
+    server = smtplib.SMTP('smtp-mail.outlook.com', 587)
     context = ssl.create_default_context() #create secure SSL context
     server.starttls(context=context)
-    server.login(dict_email, 'Cimbom1905@') #replace password
+    server.login(dict_email, 'askimasli12') #replace password
 
     #Email
     message = 'deneme emailidir, takma kafaya'
