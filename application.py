@@ -30,16 +30,18 @@ def send_email(user):
     
     #message template
     message = "Your Vocabulary List:\n"
-    for word in user.words:
-        word.count -= 1
-        print("{} : {}".format(word.text, word.count))
-            
-        #TODO 
-        #remove the word from words list if the count is < 0
-        
-        if word.count >= 0:
-            message += (word.text + " -> " + word.translated + "\n")
     
+    for word in user.words:
+        #decrement word's "count"
+        word.decrement() 
+   
+        #print("{} : {}".format(word.text, word.count)) #debug
+        
+        if word.count > 0:
+            message += (word.text + " -> " + word.translated + "\n")
+        else:
+            user.rm_word(word)
+
     #setup the parameters
     msg['From'] = dict_email
     msg['To'] = user.username #fetched from user object
@@ -122,7 +124,7 @@ def search(user_id):
         #send email if there are at least 5 word searched
         user.add_word(text,translated)
         print(len(user.words))
-        if len(user.words) % 5 == 0:
+        if len(user.words) % 8 == 0:
             send_email(user)
     return render_template("search.html",user=user)
 

@@ -14,6 +14,12 @@ class User(db.Model):
         w = Word(text=text, translated=translated, count= 3,user_id=self.id)
         db.session.add(w)
         db.session.commit()
+        return
+
+    def rm_word(self, word):
+        db.session.delete(word)
+        db.session.commit()
+        return
 
 class Word(db.Model):
     __tablename__ = "words"
@@ -23,3 +29,7 @@ class Word(db.Model):
     count = db.Column(db.Integer)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"),nullable=False)
 
+    def decrement(self):
+        self.count -= 1
+        db.session.commit()
+        return
